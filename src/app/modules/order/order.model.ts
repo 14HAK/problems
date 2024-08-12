@@ -5,40 +5,40 @@ const orderSchema: Schema<TORDER> = new mongoose.Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     items: [
       {
         productId: {
           type: Schema.Types.ObjectId,
-          ref: 'Product'
+          ref: 'Product',
         },
         quantity: {
-          type: Number
+          type: Number,
         },
-        price: Number
-      }
+        price: Number,
+      },
     ],
     totalPrice: Number,
     status: {
       type: String,
       enum: Object.values(TPRODUCTORDERSTATUS),
       // Set enum values here
-      default: TPRODUCTORDERSTATUS.COMPLETED
-    }
+      default: TPRODUCTORDERSTATUS.COMPLETED,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
 //methods
-orderSchema.methods.total = function (): string {
+orderSchema.methods.total = function(): string {
   return this.totalPrice;
 };
 
 //instance
-orderSchema.statics.findAll = function (status: string): Promise<TORDER | null> {
+orderSchema.statics.findAll = function(status: string): Promise<TORDER | null> {
   return this.find({ status });
 };
 

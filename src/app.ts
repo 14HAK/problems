@@ -11,7 +11,7 @@ app.use('/', (req: Request, res: Response, next: NextFunction) => {
   console.log({
     path: req.path,
     method: req.method,
-    strick: new Date().toLocaleString()
+    strick: new Date().toLocaleString(),
   });
   next();
 });

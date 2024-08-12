@@ -5,5 +5,5 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export default {
   PORT: process.env.PORT,
-  URI: process.env.MONGODB_URI
+  URI: process.env.MONGODB_URI,
 };

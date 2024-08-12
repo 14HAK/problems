@@ -23,7 +23,9 @@ server.ts
 ----
   PORT = "8000"
 ```
+
 ## setup mongoose Schema & model:
+
 ```javascript
 Interface
 ---------
@@ -94,6 +96,7 @@ if (foundUser) {
 ```
 
 ## Typescript:
+
 ```javascript
 // enum interface
 enum STATUS {
@@ -122,9 +125,62 @@ const statusLoyal = STATUS.COMPLETED;
 console.log(statusLoyal)
 ```
 
+## Express Typescript Request Type Add Our Custom Types :
+```javascript
+// src/types/express/index.d.ts
 
+  // Import the express module to extend its types
+  import type * as express from 'express';
 
-<!-- ### api end points:
+  // Extend the Express namespace
+  declare global {
+    namespace Express {
+      // Add custom properties to the Request interface
+      interface Request {
+        user?: JwtPayload; 
+        // Replace `JwtPayload` with your custom type
+        // Add other custom properties as needed
+      }
+    }
+  }
+
+  // If you have a custom payload interface, define it
+  interface JwtPayload {
+    userId: string;
+    email: string;
+    iat: number;
+    // Add other properties as needed
+  }
+
+// tsconfig.json
+  {
+    "compilerOptions": {
+      "target": "ES2020",
+      "module": "CommonJS",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "baseUrl": "./",
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "typeRoots": [
+        "./node_modules/@types",
+        "./src/types" // Ensure this is included
+      ]
+    },
+    "include": ["src/**/*.ts", "src/types/**/*.d.ts"], // Include your types
+    "exclude": ["node_modules", "dist"]
+  }
+
+// AuthMiddleware.ts
+  const AuthMiddleWare = async(req:Request, res:Response, next:NextFunction):Promise<void> =>{
+    req.user = decoded as JwtPayload;
+    next();
+  }
+```
+
+<!-- ## api end points:
 ```javascript
 app
   .use('/api', router);

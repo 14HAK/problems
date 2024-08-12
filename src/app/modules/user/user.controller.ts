@@ -8,6 +8,6 @@ export const GETAllUser: RequestHandler = async (req, res, next): Promise<void> 
     success: 'true',
     statusCode: 200,
     message: 'Service created successfully',
-    data: result
+    data: result,
   });
 };

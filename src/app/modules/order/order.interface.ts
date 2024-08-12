@@ -9,7 +9,7 @@ interface TPRODUCTITMS {
 export enum TPRODUCTORDERSTATUS {
   COMPLETED = 'completed',
   PENDING = 'pending',
-  CANCELED = 'canceled'
+  CANCELED = 'canceled',
 }
 
 export interface TORDER extends Document {
