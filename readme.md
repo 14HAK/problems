@@ -3,8 +3,8 @@
 ## setup .env config file:
 
 ```javascript
-config/index.ts
----------------
+// config/index.ts
+------------------
   import dotenv from 'dotenv';
   import path from 'path';
 
@@ -14,24 +14,25 @@ config/index.ts
     port: process.env.PORT
   };
 
-server.ts
----------
+// server.ts
+------------
   import envConfig from './app/config';
   const dotEnvPort = envConfig.port;
 
-.env
-----
+// .env
+-------
   PORT = "8000"
 ```
 
 ## setup mongoose Schema & model:
 
 ```javascript
-Interface
----------
+// Interface
+------------
 import { Document, Model } from 'mongoose';
 
-// Document Interface:
+// Document Interface
+---------------------
 interface TUSER extends Document {
   name: string;
   email: string;
@@ -40,12 +41,13 @@ interface TUSER extends Document {
 }
 
 // Model Interface: // statics method
+-------------------------------------
 export interface TUSERMODEL extends Model<TUSER> {
   findByEmail(email: string): Promise<TUSER | null>;
 }
 
-Schema:
--------
+// Schema
+---------
 const userSchema: Schema<TUSER> = new mongoose.Schema({
   name: {
     type: String,
@@ -58,47 +60,48 @@ const userSchema: Schema<TUSER> = new mongoose.Schema({
   }
 });
 
-pre/save hook middleware
-------------------------
+// pre/save hook middleware
+---------------------------
 userSchema.pre('save', function (next) {
   this.dateOfBirth = new Date(moment(this.dateOfBirth).format('YYYY/DD/MM'));
   next();
 });
 
-instance methods
-----------------
+// instance methods
+-------------------
 userSchema.methods.fullName = function (): string {
   return `${this.name}`;
 };
 
-statics methods
----------------
+// statics methods
+------------------
 userSchema.statics.findByEmail = function (email: string): Promise<TUSER | null> {
   return this.findOne({ email }).exec();
 };
 
-virtual methods
----------------
+// virtual methods
+------------------
 userSchema.virtual('completeName').get(function () {
   return this.name.firstName + this.name.lastName;
 });
 
-model
------
+// model
+--------
 const User: TUSERMODEL = mongoose.model<TUSER, TUSERMODEL>('User', userSchema);
 
-using process way
-------------------
+// using process way
+--------------------
 const foundUser = await User.findByEmail('johndoe@example.com');
 if (foundUser) {
   console.log(foundUser.fullName()); // Should output: John Doe
 }
 ```
 
-## Typescript:
+## Typescript enum in mongoose :
 
 ```javascript
 // enum interface
+-----------------
 enum STATUS {
   COMPLETED = 'completed',
   PENDING = 'pending',
@@ -106,11 +109,13 @@ enum STATUS {
 }
 
 // use enum in main interface
+-----------------------------
 interface TORDER extends Document {
   status: STATUS;
 }
 
 // use in mongoose Schema
+-------------------------
 const orderSchema: Schema<TORDER> = new mongoose.Schema({
   status: {
       type: String,
@@ -121,6 +126,7 @@ const orderSchema: Schema<TORDER> = new mongoose.Schema({
 })
 
 // using as a const value
+-------------------------
 const statusLoyal = STATUS.COMPLETED;
 console.log(statusLoyal)
 ```
@@ -128,6 +134,7 @@ console.log(statusLoyal)
 ## Express Typescript Request Type Add Our Custom Types :
 ```javascript
 // src/types/express/index.d.ts
+-------------------------------
 
   // Import the express module to extend its types
   import type * as express from 'express';
@@ -153,6 +160,7 @@ console.log(statusLoyal)
   }
 
 // tsconfig.json
+----------------
   {
     "compilerOptions": {
       "target": "ES2020",
@@ -174,6 +182,7 @@ console.log(statusLoyal)
   }
 
 // AuthMiddleware.ts
+--------------------
   const AuthMiddleWare = async(req:Request, res:Response, next:NextFunction):Promise<void> =>{
     req.user = decoded as JwtPayload;
     next();
