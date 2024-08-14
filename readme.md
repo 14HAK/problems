@@ -192,5 +192,5 @@ console.log(statusLoyal)
 <!-- ## api end points:
 ```javascript
 app
-  .use('/api', router);
+  .use('/api', router).;
 ``` -->
