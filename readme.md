@@ -189,6 +189,15 @@ console.log(statusLoyal)
   }
 ```
 
+## Function .TS Type Interface:
+```javascript
+  interface UserCardProps {
+    greed: (userId: number) => void;
+    meet(userId: number): number;
+    handleLogin(userId: number) => Promise<number>;
+  }
+```
+
 <!-- ## api end points:
 ```javascript
 app
